@@ -6,9 +6,9 @@ ARG workdir=/root/openvim
 ARG tag=v6.0.2
 
 RUN  apt-get update && \
-  DEBIAN_FRONTEND=noninteractive apt-get -y install git make python python-pip && \
+  DEBIAN_FRONTEND=noninteractive apt-get -y install git make python python-pip pkg-config && \
   DEBIAN_FRONTEND=noninteractive pip2 install pip==9.0.3
-  
+
 RUN mkdir -p $workdir
 
 WORKDIR $workdir
