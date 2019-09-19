@@ -2,18 +2,20 @@ FROM ubuntu:xenial
 
 LABEL maintainer="duangh_csd@si-tech.com.cn"
 
+ARG workdir=/root/openvim
+ARG tag=v6.0.2
+
 RUN  apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get -y install git make python python-pip debhelper && \
   DEBIAN_FRONTEND=noninteractive pip install -U pip && \
   DEBIAN_FRONTEND=noninteractive pip install -U setuptools setuptools-version-command stdeb
 
-RUN mkdir /root/openvim
+RUN mkdir -p ${workdir}
+WORKDIR ${workdir}
 
-WORKDIR /root/openvim
-
-RUN git clone -b v6.0.2 https://osm.etsi.org/gerrit/osm/openvim.git && \
-    make -C "/root/openvim/openvim" prepare && \
+RUN git clone -b ${tag} https://osm.etsi.org/gerrit/osm/openvim.git && \
+    make -C "${workdir}/openvim" prepare && \
     export LANG="en_US.UTF-8" && \
-    pip2 install -e  "/root/openvim/openvim/build" || ! echo "ERROR installing openvim!!!" >&2  || exit 1
+    pip2 install -e  "${workdir}/openvim/build" || ! echo "ERROR installing openvim!!!" >&2  || exit 1
 
 CMD ["openvimd"]
