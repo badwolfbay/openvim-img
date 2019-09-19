@@ -18,4 +18,7 @@ RUN git clone -b ${tag} https://osm.etsi.org/gerrit/osm/openvim.git && \
     export LANG="en_US.UTF-8" && \
     pip2 install -e  "${workdir}/openvim/build" || ! echo "ERROR installing openvim!!!" >&2  || exit 1
 
-CMD ["openvimd"]
+RUN mkdir -p /etc/openvim
+COPY ${workdir}/openvim/osm_openvim/openvimd.cfg /etc/openvim/openvimd.cfg
+
+CMD ["openvimd", "-c", "/etc/openvim/openvimd.cfg"]
